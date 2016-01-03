@@ -29,14 +29,12 @@ describe('OpenMoticsApi', function() {
   describe('login()', function() {
     it('should get a token', function(done) {
       var api = OpenMoticsApi(env.username, env.password, env.hostname, false, env.port);
+
       api.login().then(function() {
-        // assert(false);
-        // assert(typeof api.token === 'string');
-        console.log(api.token);
+        assert.equal(typeof api.token, 'string');
+        assert.equal(api.token.length, 32);
         done();
-      }).fail(function() {
-        done('error');
-      })
+      }).catch(done);
     });
   })
 });
