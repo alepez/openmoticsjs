@@ -1,0 +1,24 @@
+{
+  "name": "openmoticsjs",
+  "version": "0.0.1",
+  "description": "OpenMotics JavaScript interface",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alepez/openmoticsjs.git"
+  },
+  "keywords": [
+    "openmotics",
+    "home",
+    "automation"
+  ],
+  "author": "Alessandro Pezzato <alessandro.pezzato@gmail.com> (http://pezzato.net)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alepez/openmoticsjs/issues"
+  },
+  "homepage": "https://github.com/alepez/openmoticsjs#readme"
+}
