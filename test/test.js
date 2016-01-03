@@ -36,5 +36,23 @@ describe('OpenMoticsApi', function() {
         done();
       }).catch(done);
     });
-  })
+  });
+
+  describe('authenticated', function() {
+    var api = OpenMoticsApi(env.username, env.password, env.hostname, false, env.port);
+
+    describe('get_version', function() {
+      it('should get version', function(done) {
+        api.get_version().then(function(res) {
+          var version = res['version'];
+          var versionArr = version.split('.');
+          /*  semantic version has major.minor.patch */
+          assert.equal(versionArr.length, 3);
+          /* this should work with major version 1 */
+          assert.equal(versionArr[0], 1);
+          done();
+        }).catch(done);
+      });
+    });
+  });
 });
