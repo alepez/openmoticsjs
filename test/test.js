@@ -10,7 +10,13 @@ describe('OpenMoticsApi', function() {
     port: process.env.OPENMOTICS_PORT || 443
   };
 
-  var api = OpenMoticsApi(env.username, env.password, env.hostname, false, env.port);
+  var api = OpenMoticsApi({
+    username: env.username,
+    password: env.password,
+    hostname: env.hostname,
+    port: 8000,
+    https: false
+  });
 
   var handleError = function(done) {
     throw new Error("Error!");
@@ -25,7 +31,7 @@ describe('OpenMoticsApi', function() {
 
   describe('get_url()', function() {
     it('should return a valid url', function() {
-      assert.equal(api.get_url('action'), 'https://' + env.hostname + ':443/action');
+      assert.equal(api.get_url('action'), 'http://' + env.hostname + ':8000/action');
     });
   });
 
