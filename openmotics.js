@@ -12,17 +12,17 @@
 
 return function (options) {
 
-  if (!options.http) {
+  var Q = options.q;
+  var http = options.http;
+  var prefix = options.prefix;
+
+  if (!http) {
     throw "http or alternative must be provided";
   }
 
-  var http = options.http;
-
-  if (!options.q) {
+  if (!Q) {
     throw "Q or alternative must be provided";
   }
-
-  var Q = options.q;
 
   /* init */
   var self = {
@@ -38,7 +38,7 @@ return function (options) {
   };
 
   var get_url = function (action) {
-    return (self.https ? 'https://' : 'http://') + self.hostname + ':' + self.port + '/' + action;
+    return (self.https ? 'https://' : 'http://') + self.hostname + ':' + self.port + prefix + '/' + action;
   };
 
   var get_post_data = function (post_data) {
