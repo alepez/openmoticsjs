@@ -2,7 +2,7 @@
   "name": "openmoticsjs",
   "version": "0.0.1",
   "description": "OpenMotics JavaScript interface",
-  "main": "lib/index.js",
+  "main": "openmotics.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

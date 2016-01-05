@@ -1,7 +1,7 @@
 {
   "name": "openmoticsjs",
   "description": "OpenMotics JavaScript interface",
-  "main": "lib/index.js",
+  "main": "openmotics.js",
   "authors": [
     "Alessandro Pezzato <alessandro.pezzato@gmail.com> (http://pezzato.net)"
   ],
