@@ -78,7 +78,7 @@ return function (options) {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      data: encode_data(post_data)
+      data: url_encode_data(post_data)
     }).then(function (res) {
       if (res.status !== 200) {
         deferred.reject(res && res.status);
