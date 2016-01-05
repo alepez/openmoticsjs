@@ -1,4 +1,4 @@
-var OpenMoticsApi = require('../lib/index.js').OpenMoticsApi;
+var OpenMoticsApi = require('../openmotics.js');
 
 var env = {
     username: process.env.OPENMOTICS_USERNAME,

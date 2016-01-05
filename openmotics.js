@@ -1,46 +1,28 @@
 ;(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(['q'], factory);
-    } else if (typeof module === 'object' && module.exports) {
-        module.exports = factory(require('q'));
-    } else {
-        root.OpenMoticsApi = factory(root.q);
-    }
-}(this, function (Q) {
-
-/***** http request *****/
-
-var request = (function() {
-  if (typeof $ === 'function') {
-    /* jquery */
-    return function(config, callback) {
-      $.ajax({
-        method: config.post,
-        url: config.url,
-        data: config.formData,
-        dataType: 'json'
-      }).done(function(data) {
-        callback(null, {
-          statusCode: 200
-        }, data);
-      });
-    };
+  if (typeof define === 'function' && define.amd) {
+    define([], factory);
   } else if (typeof module === 'object' && module.exports) {
-    /* nodejs */
-    var impl = require('request');
-    return function(config, callback) {
-      impl(config, callback);
-    };
+    module.exports = factory();
   } else {
-    return function(config, callback) {
-      // FIXME
-    }
+    root.OpenMoticsApi = factory();
   }
-}());
+}(this, function () {
 
 /******************************** openmotics *********************************/
 
-return function(options) {
+return function (options) {
+
+  if (!options.http) {
+    throw "http or alternative must be provided";
+  }
+
+  var http = options.http;
+
+  if (!options.q) {
+    throw "Q or alternative must be provided";
+  }
+
+  var Q = options.q;
 
   /* init */
   var self = {
@@ -55,11 +37,11 @@ return function(options) {
     https: options.https !== false
   };
 
-  var get_url = function(action) {
+  var get_url = function (action) {
     return (self.https ? 'https://' : 'http://') + self.hostname + ':' + self.port + '/' + action;
   };
 
-  var get_post_data = function(post_data) {
+  var get_post_data = function (post_data) {
     var d = {};
 
     if (post_data) {
@@ -74,52 +56,67 @@ return function(options) {
     return d;
   };
 
-  var fetch_url = function(action, post_data, get_params, json_decode) {
+  var url_encode_data = function (data) {
+    var result = [];
+    for (key in data) {
+      if (data.hasOwnProperty(key)) {
+        result.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
+      }
+    }
+    return result.join("&");
+  }
+
+  var fetch_url = function (action, post_data, get_params, json_decode) {
     var deferred = Q.defer();
 
     var url = get_url(action);
     post_data = get_post_data(post_data);
 
-    var req = request({
-      method: 'post',
+    http({
+      method: 'POST',
       url: get_url(action),
-      formData: post_data,
-      json: true,
-      qs: get_params
-    }, function(err, res, body) {
-      if (err || res.statusCode !== 200) {
-        deferred.reject(res && res.statusCode);
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: encode_data(post_data)
+    }).then(function (res) {
+      if (res.status !== 200) {
+        deferred.reject(res && res.status);
       } else {
-        deferred.resolve(body);
+        deferred.resolve(res.data);
       }
+    }).catch(function () {
+      deferred.reject();
     });
 
     return deferred.promise;
   };
 
-  var login = function() {
+  var login = function () {
     var deferred = Q.defer();
     self.token = null;
 
-    fetch_url('login', self.auth).then(function(res) {
+    fetch_url('login', self.auth).then(function (res) {
       var token = res['token'];
       self.token = token;
       deferred.resolve(token);
-    });
+    }).catch(function () {
+      deferred.reject();
+    })
 
     return deferred.promise;
   };
 
   /** Execute an action: this method also performs the login if required. */
-  var exec_action = function(action, post_data, get_params, json_decode) {
+  var exec_action = function (action, post_data, get_params, json_decode) {
     var deferred = Q.defer();
     var noRetry = false;
 
-    var fetch = function() {
+    var fetch = function () {
       /* Try to execute the action */
-      fetch_url(action, post_data, get_params, json_decode).then(function(res) {
+      fetch_url(action, post_data, get_params, json_decode).then(function (res) {
         deferred.resolve(res);
-      }).catch(function(err) {
+      }).catch(function (err) {
         if (!noRetry && err === 401) {
           noRetry = true;
           /* Get a new token and retry the action */
@@ -140,31 +137,31 @@ return function(options) {
     return deferred.promise;
   };
 
-  var get_version = function() {
+  var get_version = function () {
     return exec_action('get_version')
   };
 
-  var get_status = function() {
+  var get_status = function () {
     return exec_action('get_status');
   };
 
-  var get_output_status = function() {
+  var get_output_status = function () {
     return exec_action('get_output_status');
   };
 
-  var get_thermostat_status = function() {
+  var get_thermostat_status = function () {
     return exec_action('get_thermostat_status');
   };
 
-  var get_sensor_brightness_status = function() {
+  var get_sensor_brightness_status = function () {
     return exec_action('get_sensor_brightness_status');
   };
 
-  var get_sensor_humidity_status = function() {
+  var get_sensor_humidity_status = function () {
     return exec_action('get_sensor_humidity_status');
   };
 
-  var get_sensor_temperature_status = function() {
+  var get_sensor_temperature_status = function () {
     return exec_action('get_sensor_temperature_status');
   };
 

@@ -1,5 +1,5 @@
 var assert = require('assert');
-var OpenMoticsApi = require('../lib/index.js');
+var OpenMoticsApi = require('../openmotics.js');
 
 describe('OpenMoticsApi', function() {
   /* to test a real OpenMotics gateway, we must provide these variables: */
