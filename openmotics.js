@@ -85,8 +85,8 @@ return function (options) {
       } else {
         deferred.resolve(res.data);
       }
-    }).catch(function () {
-      deferred.reject();
+    }).catch(function (res) {
+      deferred.reject(res.status);
     });
 
     return deferred.promise;
@@ -100,8 +100,8 @@ return function (options) {
       var token = res['token'];
       self.token = token;
       deferred.resolve(token);
-    }).catch(function () {
-      deferred.reject();
+    }).catch(function (res) {
+      deferred.reject(res);
     })
 
     return deferred.promise;
@@ -120,16 +120,20 @@ return function (options) {
         if (!noRetry && err === 401) {
           noRetry = true;
           /* Get a new token and retry the action */
-          self.login().then(fetch);
+          self.login().then(fetch).catch(function(err) {
+            deferred.reject(err);
+          });
         } else {
-          deferred.reject();
+          deferred.reject(err);
         }
       });
     };
 
     /* login before fetching url */
     if (!self.token) {
-      self.login().then(fetch);
+      self.login().then(fetch).catch(function(err) {
+        deferred.reject(err);
+      });
     } else {
       fetch();
     }
