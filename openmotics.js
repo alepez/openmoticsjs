@@ -1,3 +1,4 @@
+/* beautify ignore:start */
 ;(function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     define([], factory);
@@ -7,6 +8,7 @@
     root.OpenMoticsApi = factory();
   }
 }(this, function () {
+/* beautify ignore:end */
 
 /******************************** openmotics *********************************/
 
@@ -120,7 +122,7 @@ return function (options) {
         if (!noRetry && err === 401) {
           noRetry = true;
           /* Get a new token and retry the action */
-          self.login().then(fetch).catch(function(err) {
+          self.login().then(fetch).catch(function (err) {
             deferred.reject(err);
           });
         } else {
@@ -131,7 +133,7 @@ return function (options) {
 
     /* login before fetching url */
     if (!self.token) {
-      self.login().then(fetch).catch(function(err) {
+      self.login().then(fetch).catch(function (err) {
         deferred.reject(err);
       });
     } else {
@@ -184,4 +186,6 @@ return function (options) {
 };
 
 /*****************************************************************************/
+/* beautify ignore:start */
 }));
+/* beautify ignore:end */
