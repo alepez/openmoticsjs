@@ -16,7 +16,7 @@ return function (options) {
 
   var Q = options.q;
   var http = options.http;
-  var prefix = options.prefix;
+  var prefix = options.prefix || '';
 
   if (!http) {
     throw "http or alternative must be provided";
@@ -47,6 +47,7 @@ return function (options) {
     var d = {};
 
     if (post_data) {
+      /* make a deep copy */
       d = JSON.parse(JSON.stringify(post_data));
     }
 
