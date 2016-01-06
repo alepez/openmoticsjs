@@ -26,7 +26,7 @@ Supports `$q` promises and `$http` service, so you can do this:
     password: 'bar',              // Needed
     hostname: 'openmotics.local', // Default: localhost
     port: '443',                  // Default: 443
-    https: true,                  // Default: true
+    ssl: true,                    // Default: true
     q: $q,                        // Needed
     http: $http,                  // Needed
   });
@@ -41,7 +41,7 @@ ssl and add a prefix:
   var gateway = window.OpenMoticsApi({
     ...
     port: '8000',
-    https: false,
+    ssl: false,
     prefix: '/api'
   });
 ```

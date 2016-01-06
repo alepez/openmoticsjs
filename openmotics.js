@@ -36,11 +36,11 @@ return function (options) {
     verify_https: options.verify_https, // FIXME needs NODE_TLS_REJECT_UNAUTHORIZED=0 env var or browser configuration
     port: options.port || 443,
     token: null,
-    https: options.https !== false
+    ssl: options.ssl !== false
   };
 
   var get_url = function (action) {
-    return (self.https ? 'https://' : 'http://') + self.hostname + ':' + self.port + prefix + '/' + action;
+    return (self.ssl ? 'https://' : 'http://') + self.hostname + ':' + self.port + prefix + '/' + action;
   };
 
   var get_post_data = function (post_data) {
