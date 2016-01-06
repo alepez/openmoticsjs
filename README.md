@@ -4,6 +4,12 @@ OpenMotics SDK for communication with the OpenMotics Gateway.
 
 JavaScript port of the [OpenMotics SDK](https://github.com/openmotics/sdk).
 
+## Install
+
+Can be installed with bower: `bower install --save openmoticsjs`
+
+Can be installed with npm: `npm install --save openmoticsjs`
+
 ## Usage
 
 It works with [Node.js](https://github.com/nodejs/node) and in browsers.
