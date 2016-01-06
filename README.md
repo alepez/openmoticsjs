@@ -1,6 +1,5 @@
 # OpenMotics JS
 
-Javascript SDK for OpenMotics.
+OpenMotics SDK for communication with the OpenMotics Gateway.
 
-## TODO
-
+JavaScript port of the [OpenMotics SDK](https://github.com/openmotics/sdk).
