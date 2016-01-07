@@ -16,7 +16,6 @@ return function (options) {
 
   var Q = options.q;
   var http = options.http;
-  var prefix = options.prefix || '';
 
   if (!http) {
     throw "http or alternative must be provided";
@@ -44,7 +43,7 @@ return function (options) {
   };
 
   var get_url = function (action) {
-    return (self.ssl ? 'https://' : 'http://') + self.hostname + ':' + self.port + prefix + '/' + action;
+    return (self.ssl ? 'https://' : 'http://') + self.hostname + ':' + self.port + (options.prefix || '') + '/' + action;
   };
 
   var get_post_data = function (post_data) {
