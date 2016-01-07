@@ -39,6 +39,10 @@ return function (options) {
     ssl: options.ssl !== false
   };
 
+  var is_none = function(value) {
+    return value !== null && value !== undefined;
+  };
+
   var get_url = function (action) {
     return (self.ssl ? 'https://' : 'http://') + self.hostname + ':' + self.port + prefix + '/' + action;
   };
@@ -172,6 +176,20 @@ return function (options) {
     return exec_action('get_sensor_temperature_status');
   };
 
+  var set_output = function (id, on, dimmer, timer) {
+    var post_data = {
+      'id': id,
+      'is_on': on
+    };
+    if (is_none(dimmer)) {
+      post_data['dimmer'] = dimmer
+    }
+    if (is_none(timer)) {
+      post_data['timer'] = timer
+    }
+    return exec_action('set_output', post_data)
+  };
+
   /* export public functions */
   self.get_url = get_url;
   self.login = login;
@@ -182,6 +200,7 @@ return function (options) {
   self.get_sensor_brightness_status = get_sensor_brightness_status;
   self.get_sensor_humidity_status = get_sensor_humidity_status;
   self.get_sensor_temperature_status = get_sensor_temperature_status;
+  self.set_output = set_output;
 
   return self;
 };
