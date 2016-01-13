@@ -35,7 +35,7 @@ describe('OpenMoticsApi', function () {
     password: env.password,
     hostname: env.hostname,
     port: 8000,
-    https: false,
+    ssl: false,
     http: http,
     q: q
   });
