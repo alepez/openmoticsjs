@@ -64,18 +64,17 @@ return function (options) {
 
   var url_encode_data = function (data) {
     var result = [];
-    for (key in data) {
+    for (var key in data) {
       if (data.hasOwnProperty(key)) {
         result.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
       }
     }
     return result.join("&");
-  }
+  };
 
   var fetch_url = function (action, post_data, get_params, json_decode) {
     var deferred = Q.defer();
 
-    var url = get_url(action);
     post_data = get_post_data(post_data);
 
     http({
@@ -108,7 +107,7 @@ return function (options) {
       deferred.resolve(token);
     }).catch(function (res) {
       deferred.reject(res);
-    })
+    });
 
     return deferred.promise;
   };
@@ -148,7 +147,7 @@ return function (options) {
   };
 
   var get_version = function () {
-    return exec_action('get_version')
+    return exec_action('get_version');
   };
 
   var get_status = function () {
@@ -181,12 +180,12 @@ return function (options) {
       'is_on': on
     };
     if (is_none(dimmer)) {
-      post_data['dimmer'] = dimmer
+      post_data['dimmer'] = dimmer;
     }
     if (is_none(timer)) {
-      post_data['timer'] = timer
+      post_data['timer'] = timer;
     }
-    return exec_action('set_output', post_data)
+    return exec_action('set_output', post_data);
   };
 
   var get_output_configurations = function () {
