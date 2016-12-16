@@ -1,25 +1,6 @@
 import request from 'request';
 
-const http = function (options) {
-  const deferred = Promise.defer();
-
-  request({
-    method: options.method,
-    url: options.url,
-    data: options.data,
-    headers: options.headers
-  }, (err, res, body) => {
-    if (err) {
-      deferred.reject();
-    } else {
-      deferred.resolve(body);
-    }
-  });
-
-  return deferred.promise;
-};
-
-export default function (options) {
+const export default function (options) {
   const o = Object.assign({
     hostname: 'localhost',
     password: 'admin',
@@ -49,24 +30,30 @@ export default function (options) {
   const fetchUrl = function (action, data) {
     const deferred = Promise.defer();
 
-    /* Add authorization token */
-    data['token'] = token;
+    const d = Object.assign({}, data);
 
-    http({
+    /* Add authorization token */
+    if (token) {
+      d['token'] = token;
+    }
+
+    const opts = {
       method: 'POST',
       url: getUrl(action),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       data: urlEncodeData(data)
-    }).then((res) => {
-      if (res.status !== 200) {
-        deferred.reject(res && res.status);
+    };
+
+    request(opts, (err, res, body) => {
+      if (err) {
+        deferred.reject(err);
+      } else if (res.statusCode !== 200){
+        deferred.reject(new Error(`Error ${res.statusCode}`));
       } else {
-        deferred.resolve(res.data);
+        deferred.resolve(body);
       }
-    }).catch((res) => {
-      deferred.reject(res.status);
     });
 
     return deferred.promise;
@@ -74,9 +61,15 @@ export default function (options) {
 
   const login = function () {
     const deferred = Promise.defer();
+
     o.token = null;
 
-    fetchUrl('login', o.auth).then((res) => {
+    const data = {
+      'username': o.username,
+      'password': o.password
+    };
+
+    fetchUrl('login', data).then((res) => {
       token = res['token'];
       deferred.resolve(token);
     }).catch(function (res) {
@@ -88,7 +81,7 @@ export default function (options) {
 
   /** Execute an action: this method also performs the login if required. */
   const execAction = function (action, data, params, jsonDecode) {
-    const deferred = Q.defer();
+    const deferred = Promise.defer();
     let noRetry = false;
 
     const fetch = function () {
