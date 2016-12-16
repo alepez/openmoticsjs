@@ -163,7 +163,7 @@ export default function (options) {
   };
 
   return {
-    getVersion
+    getVersion,
     getStatus,
     getOutputStatus,
     getThermostatStatus,
