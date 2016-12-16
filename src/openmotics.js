@@ -43,7 +43,7 @@ export default function (options) {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      data: urlEncodeData(data)
+      formData: d
     };
 
     request(opts, (err, res, body) => {
@@ -62,7 +62,7 @@ export default function (options) {
   const login = function () {
     const deferred = Promise.defer();
 
-    o.token = null;
+    token = undefined;
 
     const data = {
       'username': o.username,
@@ -70,7 +70,8 @@ export default function (options) {
     };
 
     fetchUrl('login', data).then((res) => {
-      token = res['token'];
+      const r = JSON.parse(res);
+      token = r['token'];
       deferred.resolve(token);
     }).catch(function (res) {
       deferred.reject(res);
