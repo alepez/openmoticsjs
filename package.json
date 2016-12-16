@@ -1,6 +1,6 @@
 {
   "name": "openmoticsjs",
-  "version": "0.2.6",
+  "version": "1.0.0",
   "description": "OpenMotics JavaScript interface",
   "main": "openmotics.js",
   "scripts": {
@@ -22,8 +22,5 @@
   },
   "homepage": "https://github.com/alepez/openmoticsjs#readme",
   "dependencies": {
-    "browser-request": "^0.3.3",
-    "q": "^1.4.1",
-    "request": "^2.67.0"
   }
 }
