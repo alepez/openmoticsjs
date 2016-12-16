@@ -81,14 +81,14 @@ export default function (options) {
   };
 
   /** Execute an action: this method also performs the login if required. */
-  const execAction = function (action, data, params, jsonDecode) {
+  const execAction = function (action, data, params) {
     const deferred = Promise.defer();
     let noRetry = false;
 
     const fetch = function () {
       /* Try to execute the action */
-      fetchUrl(action, data, params, jsonDecode).then((res) => {
-        deferred.resolve(res);
+      fetchUrl(action, data, params).then((res) => {
+        deferred.resolve(JSON.parse(res));
       }).catch((err) => {
         if (!noRetry && err === 401) {
           noRetry = true;
