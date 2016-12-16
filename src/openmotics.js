@@ -1,6 +1,6 @@
 import request from 'request';
 
-const export default function (options) {
+export default function (options) {
   const o = Object.assign({
     hostname: 'localhost',
     password: 'admin',
